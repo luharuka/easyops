@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="index.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+</head>
+
+<body>
+    <form id="form">
+        <p>
+            <label>Person's Name</label>
+            <br>
+            <input type="text" id="firstname" required placeholder="First">
+            <input type="text" id="lastname" required placeholder="Last">
+        </p>
+        <p>
+            <label>Contact Number</label>
+            <br>
+            <input type="text" id="phone" required>
+        </p>
+        <p>
+            <button type="button" id="submit" onclick="generateTable()">Save</button>
+        </p>
+    </form>
+    <p><input type="search" name="" id="search"></p>
+    <br>
+    <table id="myTable">
+        <thead>
+            <tr class="w3-blue">
+                <th nowrap>SN.</th>
+                <th nowrap onclick="sortTable(0)">Name</th>
+                <th nowrap>Contact</th>
+                <th nowrap>Delete</th>
+            </tr>
+        </thead>
+        <tbody id="myTables">
+        </tbody>
+
+    </table>
+    </div>
+    <script type="text/javascript">
+        $('#submit').on('click', function () {
+            var first_name = $('#firstname').val();
+            var last_name = $('#lastname').val();
+            var phone = $('#phone').val();
+            var count = $('#myTable tr').length;
+            if (firstname != "" && lastname != "" && phone != "") {
+                $('#myTable tbody').append('<tr class="child"><td>' + count +
+                    '</td><td>' + first_name + " " + last_name + '</td><td>' + phone +
+                    '</td><td><a href="javascript:void(0);" class="remCF1 btn btn-small btn-danger" id="remove">X</a></td></tr>');
+            }
+        });
+
+        $(document).on('click', '.remCF1', function () {
+            alert("Entry Deleted");
+            $(this).parent().parent().remove();
+            $('#myTable tbody tr').each(function (i) {
+                $($(this).find('td')[0]).html(i + 1);
+
+            });
+        });
+
+        $(document).ready(function () {
+            $("#search").on("keyup", function () {
+                var value = $(this).val().toLowerCase();
+                $("#myTables tr").filter(function () {
+                    $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+                });
+            });
+        });
+
+        function sortTable(n) {
+            var table,rows,
+                switching,
+                i,x,y,
+                shouldSwitch,
+                dir,switchcount = 0;
+            table = document.getElementById("myTable");
+            switching = true;
+            dir = "asc";
+            while (switching) {
+                switching = false;
+                rows = table.getElementsByTagName("TR");
+                for (i = 1; i < rows.length - 1; i++) {
+
+                    shouldSwitch = false;
+                    x = rows[i].getElementsByTagName("TD")[n];
+                    y = rows[i + 1].getElementsByTagName("TD")[n];
+                    if (dir == "asc") {
+                        if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
+                            shouldSwitch = true;
+                            break;
+                        }
+                    } else if (dir == "desc") {
+                        if (x.innerHTML.toLowerCase() < y.innerHTML.toLowerCase()) {
+                            shouldSwitch = true;
+                            break;
+                        }
+                    }
+                }
+                if (shouldSwitch) {
+                    rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+                    switching = true;
+                    switchcount++;
+                } else {
+                    if (switchcount == 0 && dir == "asc") {
+                        dir = "desc";
+                        switching = true;
+                    }
+                }
+            }
+        }
+    </script>
+</body>
+
+</html>
